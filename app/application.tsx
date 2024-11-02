@@ -1105,16 +1105,27 @@ function Help() {
         sistema és prou intel·ligent per descobrir-ho (la majoria de vegades).
       </div>
       <div className="flex justify-center mb-4">
-        <pre>
-          {"+-------------------------------+\n"}
-          {"| història      | mapa          |\n"}
-          {"| ...           |               |\n"}
-          {"| ...           |               |\n"}
-          {"| ...           +---------------|\n"}
-          {"+---------------+ habitacions & |\n"}
-          {"| ESCRIU AQUÍ   | persones      |\n"}
-          {"+---------------+---------------+\n"}
-        </pre>
+        <div className="grid grid-cols-2 border-2 border-dashed border-gray-600 text-gray-300">
+          <div className="border-r-2 border-dashed border-gray-600">
+            <div className="h-48 p-3 border-b-2 border-dashed border-gray-600">
+              <h2 className="font-mono text-base mb-2 whitespace-nowrap">història</h2>
+              <div className="text-sm">...</div>
+              <div className="text-sm">...</div>
+              <div className="text-sm">...</div>
+            </div>
+            <div className="h-15 p-3">
+              <h2 className="font-mono uppercase text-base">escriu aquí</h2>
+            </div>
+          </div>
+          <div>
+            <div className="h-32 p-3 border-b-2 border-dashed border-gray-600">
+              <h2 className="font-mono text-base whitespace-nowrap">mapa</h2>
+            </div>
+            <div className="h-15 p-3">
+              <h2 className="font-mono text-base whitespace-nowrap">sales<br/>&<br/>persones</h2>
+            </div>
+          </div>
+        </div>
       </div>
       <div className="flex justify-center">
         <span className="done bg-green-800 hover:bg-green-600 cursor-pointer px-4">
