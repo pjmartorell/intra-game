@@ -59,7 +59,7 @@ export default function Home() {
           Intra
           <span className="text-gray-500 text-sm hidden md:inline">
             {" "}
-            !alpha: save games will break periodically
+            !alfa: guardar jocs pot trencar-se periòdicament
           </span>
           <span className="text-gray-500 text-sm md:hidden"> !alpha</span>
         </span>
@@ -470,13 +470,13 @@ function Input() {
     }
     textareaRef.current!.focus();
   }
-  let placeholder = "Waiting...";
+  let placeholder = "Esperant...";
   if (!model.runningSignal.value) {
     placeholder =
-      model.world.lastSuggestions || "ENTER COMMAND OR INSTRUCTIONS";
+      model.world.lastSuggestions || "INTRODUÏU UNA ORDRE O INSTRUCCIONS";
     if (model.updates.value.length < 7) {
       placeholder =
-        "These are just SUGGESTIONS, you can type anything...\n" + placeholder;
+        "Aquestes són només SUGGERÈNCIES, pots escriure qualsevol cosa...\n" + placeholder;
     }
   }
   return (
@@ -607,7 +607,7 @@ function Inventory() {
   return (
     <div className="flex-1 p-4">
       <div className="mb-2">Inventory</div>
-      (no inventory implemented)
+      (encara no tens inventori implementat)
       <div>- Key card</div>
     </div>
   );
@@ -759,18 +759,18 @@ function IntroList() {
   const ama = model.world.entities.Ama;
   return (
     <div className="flex-1">
-      Welcome to Intra!
+      Benvingut a Intra!
       <ul>
-        <li>1. {checkText(ama.sharedSelf)} Meet Ama</li>
-        <li>2. {checkText(ama.sharedIntra)} Meet Intra</li>
+        <li>1. {checkText(ama.sharedSelf)} Coneix a l'Ama</li>
+        <li>2. {checkText(ama.sharedIntra)} Coneix Intra</li>
         <li>
-          3. {checkText(ama.knowsPlayerName)} Name?
+          3. {checkText(ama.knowsPlayerName)} Nom?
           {extraCheck(ama.knowsPlayerPronouns)}
         </li>
-        <li>4. {checkText(ama.knowsPlayerProfession)} Profession?</li>
+        <li>4. {checkText(ama.knowsPlayerProfession)} Professió?</li>
         <li>
-          5. {checkText(ama.sharedDisassociation && ama.sharedPlayerAge)} Know
-          about yourself?{extraCheck(ama.sharedDisassociation)}
+          5. {checkText(ama.sharedDisassociation && ama.sharedPlayerAge)} Et coneixes
+          a tu mateix?{extraCheck(ama.sharedDisassociation)}
           {extraCheck(ama.sharedPlayerAge)}
         </li>
       </ul>
@@ -841,7 +841,7 @@ function SaveControls({ onDone }: { onDone: () => void }) {
           onDone();
         }}
       >
-        Save
+        Guardar
       </Button>
     </div>
   );
@@ -870,7 +870,7 @@ function LoadControls({ onDone }: { onDone: () => void }) {
               onDone();
             }}
           >
-            New Game
+            Nova partida
           </Button>
         </div>
 
@@ -1054,7 +1054,7 @@ function TimePeriod({
   return (
     <div
       className={twMerge("cursor-help opacity-50 hover:opacity-100", className)}
-      title={`${minutes} minutes passed`}
+      title={`han passat ${minutes} minuts`}
     >
       {timeChar}
     </div>
@@ -1083,43 +1083,42 @@ function Help() {
             target="_blank"
             rel="noopener"
           >
-            by Ian Bicking
+            per Ian Bicking
           </a>
         </div>
       </div>
       <div className="mb-4">
-        Welcome to the Intra Complex! Everything here is just perfect. No need
-        to worry about a thing... except figuring out where you are. But don't
-        worry, you're in good hands.
+        Benvingut al Complex d'Intra! Aquí tot és perfecte. No hi ha res de què
+        preocupar-se... excepte de descobrir on ets. Però no et preocupis, ets en bones
+        mans.
       </div>
       <div className="mb-4">
-        You will play a character from a time not unlike today, except maybe
-        with more smart fridges that talk back. You decide your name and
-        profession - don't overthink it, just pick something and keep an eye out
-        for suspiciously friendly fridges.
+        Interpretaràs un personatge d'una època no gaire diferent de l'actual,
+        potser amb més neveres intel·ligents que parlen. Tria el teu nom i
+        professió - no t'ho pensis massa, simplement escull alguna cosa i vigila les
+        neveres sospitosament amigables.
       </div>
       <div className="mb-4">
-        This is a text adventure (or as it's now more fashionably called,
-        "interactive fiction"). Whether you're exploring strange rooms,
-        questioning fellow citizens, or trying to outwit the AI, type whatever
-        comes to mind. The system is smart enough to figure it out (most of the
-        time).
+        Això és una aventura de text (o el que ara està de moda dir-ne "ficció
+        interactiva"). Ja sigui explorant habitacions estranyes, interrogant a altres
+        ciutadans o intentant enganyar la IA, escriu allò que et vingui al cap. El
+        sistema és prou intel·ligent per descobrir-ho (la majoria de vegades).
       </div>
       <div className="flex justify-center mb-4">
         <pre>
-          {"+-------------------------+\n"}
-          {"| story         | map     |\n"}
-          {"| ...           |         |\n"}
-          {"| ...           |         |\n"}
-          {"| ...           +---------|\n"}
-          {"+---------------+ rooms & |\n"}
-          {"| TYPE HERE     | people  |\n"}
-          {"+---------------+---------+\n"}
+          {"+-------------------------------+\n"}
+          {"| història      | mapa          |\n"}
+          {"| ...           |               |\n"}
+          {"| ...           |               |\n"}
+          {"| ...           +---------------|\n"}
+          {"+---------------+ habitacions & |\n"}
+          {"| ESCRIU AQUÍ   | persones      |\n"}
+          {"+---------------+---------------+\n"}
         </pre>
       </div>
       <div className="flex justify-center">
         <span className="done bg-green-800 hover:bg-green-600 cursor-pointer px-4">
-          DONE
+          FET
         </span>
       </div>
     </div>
@@ -1132,7 +1131,7 @@ function Settings() {
       <div className="flex justify-center mb-4">Settings</div>
       <div className="flex-1 overflow-y-auto">
         <div>
-          Choose a model:
+          Escull un model:
           <br />
           <ModelSelector
             signal={openrouterModel}
@@ -1163,7 +1162,7 @@ function Settings() {
           ) : (
             <>
               <div className="mb-4">
-                To have access to paid models you can get a code from{" "}
+                Per tenir accés a models de pagament, pots obtenir un codi de
                 <A href="https://openrouter.ai/" blank>
                   OpenRouter.ai
                 </A>
@@ -1189,7 +1188,7 @@ function Settings() {
       </div>
       <div className="flex justify-center">
         <span className="done bg-green-800 hover:bg-green-600 cursor-pointer px-4">
-          DONE
+          FET
         </span>
       </div>
     </div>

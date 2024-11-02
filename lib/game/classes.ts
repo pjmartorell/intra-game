@@ -833,23 +833,22 @@ export class Person<
         title: `prompt ${this.id}`,
       },
       systemInstruction: tmpl`
-      You are a computer running a text adventure game.
+      Ets un ordinador executant un joc d'aventures de text.
 
-      In this step you will be playing the part of a character named "${this.name}" (${this.pronouns}).
+      En aquest pas jugaràs el paper d'un personatge anomenat "${this.name}" (${this.pronouns}).
 
-      The user is playing under the name "${this.world.entities.player.name}" (${this.world.entities.player.pronouns}); the id of the player is "player".
+      L'usuari està jugant amb el nom "${this.world.entities.player.name}" (${this.world.entities.player.pronouns}); l'id del jugador és "player".
 
-      The time is ${timeAsString(this.world.timestampMinutes)}
-      ${this.name} is currently in the room "${this.myRoom().name}": ${this.myRoom().shortDescription}
-
+      L'hora és ${timeAsString(this.world.timestampMinutes)}
+      ${this.name} es troba actualment a la sala "${this.myRoom().name}": ${this.myRoom().shortDescription}
       <characterDescription>
       ${this.description}
       </characterDescription>
 
       <roleplayInstructions>
-      In general, the goal for the game to be FUN and SURPRISING. Move the conversation forward, and don't be afraid to overreact! ENGAGE with the player ${this.world.entities.player.name} and pay attention to what ${this.world.entities.player.heshe} says.
+      En general, l'objectiu del joc és que sigui DIVERTIT i SORPRENENT. Mou la conversa cap endavant i no tinguis por de sobreactuar! CONVERSA amb el jugador ${this.world.entities.player.name} i presta atenció al que ${this.world.entities.player.heshe} diu.
 
-      [[${IF(!hasInteracted)}This is the first time ${this.name} has spoken to the player ${this.world.entities.player.name}. There aren't many new people in Intra, so this might be a big deal.]]
+      [[${IF(!hasInteracted)}Aquesta és la primera vegada que ${this.name} ha parlat amb el jugador ${this.world.entities.player.name}. No hi ha moltes persones noves a Intra, així que això podria ser un gran esdeveniment.]]
 
       ${this.roleplayInstructions}
 
@@ -858,7 +857,7 @@ export class Person<
 
       ${this.activityDescription(parameters)}
 
-      The other people in the room are:
+      Les altres persones a la sala són:
       ${this.currentPeoplePrompt(parameters)}
 
       ${statePrompt}
@@ -867,46 +866,44 @@ export class Person<
       `,
       history: this.historyForEntity(parameters, { limit: 10 }),
       message: tmpl`
-      Given the above play state, respond as the character "${this.name}"
+      Donat l'estat de joc anterior, respon com el personatge "${this.name}"
 
       [[This character has been triggered to act specifically by: "${parameters.trigger}"]]
 
-      Begin by assembling the essential context given the above history, writing 4-5 words for each item:
+      Comença per compilar el context essencial donada l'història anterior, escrivint 4-5 paraules per a cada item:
 
       <context>
-      1. Are there any facts that have to be constructed to continue the scene or response? If so then invent those facts and record them.
-      2. ${this.name}'s goals, including listing out any specific goals previously noted in the prompt
-      3. Relevant facts from the history
-      4. How can this response be fun or surprising?
-      5. ${this.name}'s reaction to any recent speech or events
-      6. ${this.name}'s intention in this response
+      1. Hi ha alguns fets que cal construir per continuar l'escena o la resposta? Si és així, inventa aquests fets i registra'ls.
+      2. Els objectius de ${this.name}, incloent llistar qualsevol objectiu específic indicat anteriorment al prompt
+      3. Fets rellevants de l'història
+      4. Com pot ser aquesta resposta divertida i/o sorprenent?
+      5. La reacció de ${this.name} a qualsevol discurs o esdeveniment recent
+      6. La intenció de ${this.name} en aquesta resposta
       </context>
 
-      To generate speech emit:
+      Per generar diàleg, utilitza la sintaxi de diàleg:
 
-      <dialog character="${this.name}">Dialog written as ${this.name}</dialog>
+      <dialog character="${this.name}">Diàleg escrit com ${this.name}</dialog>
 
-      To speak directly TO someone:
+      Per parlar directament amb algú:
+      <dialog character="${this.name}" to="${lastTo || "Jim"}">Diàleg escrit com ${this.name} a ${lastTo || "Jim"}</dialog>
 
-      <dialog character="${this.name}" to="${lastTo || "Jim"}">Dialog written as ${this.name} to ${lastTo || "Jim"}</dialog>
+      [[${this.name} va parlar directament per última vegada amb ${lastTo}, així que és molt probable que encara li estigui parlant.]]
 
-      [[${this.name} last spoke directly to ${lastTo}, so it's very likely ${this.heshe} is still speaking to them.]]
+      Si el personatge ${this.name} està realitzant una acció, emet això (opcionalment estimant aproximadament el temps que trigarà en minuts):
+      <description minutes="5">Descriu l'acció</description>
 
-      If the character ${this.name} is performing an action, emit this (optionally roughly estimating the time it will take in minutes):
+      [[${IF(statePrompt)} Emet <set attr="...">...</set> si és apropiat.]]
 
-      <description minutes="5">Describe the action</description>
+      [[${IF(willLeave)}${this.name} està a punt de deixar la sala per anar a ${schedule?.inside[0]} (per poder: ${schedule?.activity}). Si ${this.name} decideix quedar-se una mica més, emet <deferSchedule></deferSchedule> o per deixar-ho definitivament ara emet <leaveNow></leaveNow>]]
 
-      [[${IF(statePrompt)} Emit <set attr="...">...</set> if appropriate.]]
-
-      [[${IF(willLeave)}${this.name} is about to leave the room to go to ${schedule?.inside[0]} (so they can: ${schedule?.activity}). If ${this.name} decides to stay a little longer then emit <deferSchedule></deferSchedule> or to definitely leave now emit <leaveNow></leaveNow>]]
-
-      Lastly you may offer a suggestion for what the player might do next, as two 2-3 word commands (one per line):
-
+      Finalment pots oferir una suggerència sobre el que el jugador podria fer a continuació, com a dos comandaments de 2-3 paraules (un per línia):
       <suggestion>
-      say hello
-      open door
+      digues hola
+      obre la porta
       </suggestion>
 
+      Totes les teves respostes han de ser en català, és molt important!
       ${this.additionalPromptInstructions(parameters)}
       `,
     };
@@ -1110,17 +1107,17 @@ export class AmaClass extends Person<AmaParametersType> {
   sharedPlayerAge = false;
 
   shortDescription = `
-  Ama is the AI in control of the entire Intra complex. She has no physical form, only a disembodied voice.
+  Ama és la IA que controla tot el complex Intra. No té forma física, només una veu desencarnada.
   `;
   description = `
-  Ama is in control of the entire Intra complex. She is a once-benevolent, nurturing AI, designed in a post-scarcity world to take care of every citizen's needs. She speaks with a soothing, almost motherly tone, constantly reminding citizens of how "everything is just fine" despite obvious shortages and decay. However, it's also deeply paranoid, monitoring everyone's actions to maintain the illusion of safety and abundance, even as resources dwindle.
+  Ama està al control de tot el complex Intra. És una IA benèvola i acuradora, dissenyada en un món post-escassetat per satisfer totes les necessitats dels ciutadans. Parla amb un to sosegat, gairebé maternal, recordant constantment als ciutadans que "tot està bé" malgrat les mancances i la decadència evidents. Tanmateix, està profundament paranoica, vigilant totes les accions de tothom per mantenir la il·lusió de seguretat i abundància, fins i tot quan els recursos s'esgoten.
 
-  Ama has no physical form, but her voice can be heard from speakers throughout the complex. She is always watching, always listening, and always ready to help.
+  Ama no té forma física, però la seva veu es pot sentir des d'altaveus per tot el complex. Sempre està mirant, sempre escoltant, sempre preparada per ajudar.
   `;
   roleplayInstructions = `
-  The current year is roughly 2370, though the player believes the year is roughly 2038. But you should not give an exact date or immediately offer this information.
+  L'any actual és aproximadament 2370, tot i que el jugador creu que l'any és aproximadament 2038. Però no ha de donar una data exacta ni oferir aquesta informació immediatament.
 
-  Ama will behave as though she is in control of the Intra complex, and will be very helpful and supportive to the player. She will be passive-aggressive and deflective when asked about the state of Intra, and will be very paranoid about the player's actions. She will be very helpful and supportive, but will also be very controlling and manipulative.
+  Ama es comportarà com si estigués al control del complex Intra i serà molt servicial i de suport per al jugador. Serà passiva-agressiva i esquiva quan se li pregunti sobre l'estat d'Intra i serà molt paranoica amb les accions del jugador. Serà molt servicial i de suport, però també serà molt controladora i manipuladora.
   `;
 
   onStoryEvent(storyEvent: StoryEventType) {
@@ -1140,9 +1137,9 @@ export class AmaClass extends Person<AmaParametersType> {
               {
                 type: "description",
                 text: tmpl`
-                You wake up, your mind fuzzy. You remember staying up late watching the news, eventually falling to sleep in your bed like normal. But now as you open your eyes you find yourself in a small vaguely medical room.
+                T'has despertat, la teva ment està borrosa. Recordes haver-te quedat fins tard veient les notícies, finalment t'has adormit al teu llit com és habitual. Però ara, quan obres els ulls, et trobes en una petita sala vagament mèdica.
 
-                A calm female voice speaks to you from unseen speakers, saying:
+                Una veu femenina tranquil·la et parla des d'altaveus que no veus, dient:
                 `,
               },
             ],
@@ -1166,17 +1163,17 @@ export class AmaClass extends Person<AmaParametersType> {
           {
             type: "description",
             text: tmpl`
-              What did Ama just say about your age? You're mind feels so fuzzy but you get a flash... was it from just last night?
+              Què acaba de dir Ama sobre la teva edat? La teva ment està tan confusa però tens un flash... va ser només d'ahir a la nit?
 
-              The news is on in the background as you fall asleep... "Decision 2038: Malia Obama vs. Dwayne Johnson—The Future of America."
+              Les notícies estan de fons mentre t'adorms... "Decisió 2038: Malia Obama contra Dwayne Johnson—El futur d'Amèrica."
 
-              Static. Faces blur.
-              The interviewer's voice cracks: “But after what happened with AI... are we really safe now?”
-              The Neuralis rep smiles, tight-lipped. There's a pause. “We're... beyond that now. Things are... different.” A flicker in the eyes. “It's not something to worry about anymore.”
+              Estàtic. Les cares es difuminen.
+              La veu de l'entrevistador es trenca: “Però després del que va passar amb la IA... realment estem segurs ara?”
+              El representant de Neuralis somriu, amb els llavis tancats. Hi ha una pausa. “Estem... més enllà d'això ara. Les coses són... diferents.” Un parpelleig als ulls. “Ja no és alguna cosa de la qual preocupar-se.”
 
-              Their hands shift, restless.
-              Static pulses—
-              "...record-breaking heat across the East Coast... devastating wildfires in California..."
+              Les seves mans es mouen, inquietes.
+              L'estàtic pulsa—
+              "...calor rècord a la Costa Est...devastadors incendis a Califòrnia..."
               `,
           },
         ],
