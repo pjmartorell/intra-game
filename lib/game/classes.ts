@@ -837,7 +837,7 @@ export class Person<
         title: `prompt ${this.id}`,
       },
       systemInstruction: tmpl`
-      You are a computer running a text adventure game in ${this.world.language} language.
+      You are a computer running a text adventure game in ${this.world.language} language, but do not translate proper nouns, place names, character names, or item names such as ${this.world.rooms.join(", ")} (keep these names exactly as they are).
 
       In this step you will be playing the part of a character named "${this.name}" (${this.pronouns}).
 
@@ -853,7 +853,7 @@ export class Person<
       <roleplayInstructions>
       In general, the goal for the game to be FUN and SURPRISING. Move the conversation forward, and don't be afraid to overreact! ENGAGE with the player ${this.world.entities.player.name} and pay attention to what ${this.world.entities.player.heshe} says.
 
-      Even if the player answers in other languages, you must always respond in ${this.world.language}.
+      Even if the player answers in other languages, you must always respond in ${this.world.language}, but do not translate proper nouns, place names, character names, or item names such as ${this.world.rooms.join(", ")} (keep these names exactly as they are).
 
       [[${IF(!hasInteracted)}This is the first time ${this.name} has spoken to the player ${this.world.entities.player.name}. There aren't many new people in Intra, so this might be a big deal.]]
 
@@ -873,7 +873,7 @@ export class Person<
       `,
       history: this.historyForEntity(parameters, { limit: 10 }),
       message: tmpl`
-      Given the above play state, respond as the character "${this.name}" in ${this.world.language} language.
+      Given the above play state, respond as the character "${this.name}" in ${this.world.language} language, but do not translate proper nouns, place names, character names, or item names such as ${this.world.rooms.join(", ")} (keep these names exactly as they are).
 
       [[This character has been triggered to act specifically by: "${parameters.trigger}"]]
 
@@ -906,12 +906,16 @@ export class Person<
 
       [[${IF(willLeave)}${this.name} is about to leave the room to go to ${schedule?.inside[0]} (so they can: ${schedule?.activity}). If ${this.name} decides to stay a little longer then emit <deferSchedule></deferSchedule> or to definitely leave now emit <leaveNow></leaveNow>]]
 
-      Lastly you may offer a suggestion for what the player might do next, as two 2-3 word commands (one per line):
+      Lastly you may offer a suggestion in ${this.world.language} language, for what the player might do next, as two 2-3 word commands (one per line):
+
+      When writing in Catalan do not translate proper nouns, place names, character names, or item names such as ${this.world.rooms.join(", ")} (keep these names exactly as they are).
 
       <suggestion>
-      say hello
-      open door
+      dir hola
+      obrir porta
       </suggestion>
+
+      If you detect any input from me in any language, always respond in ${this.world.language} language, without exception, but do not translate proper nouns, place names, character names, or item names such as ${this.world.rooms.join(", ")} (keep these names exactly as they are).
 
       ${this.additionalPromptInstructions(parameters)}
       `,
@@ -1146,9 +1150,9 @@ export class AmaClass extends Person<AmaParametersType> {
               {
                 type: "description",
                 text: tmpl`
-                T'has despertat, la teva ment està borrosa. Recordes haver-te quedat fins tard veient les notícies, finalment t'has adormit al teu llit com és habitual. Però ara, quan obres els ulls, et trobes en una petita sala vagament mèdica.
+                Et despertes, la teva ment està borrosa. Recordes haver-te quedat fins tard veient les notícies, finalment t'has adormit al teu llit com és habitual. Però ara, quan obres els ulls, et trobes en una petita sala vagament mèdica.
 
-                Una veu femenina tranquil·la et parla des d'altaveus que no veus, dient:
+                Una plàcida veu femenina et parla des d'uns altaveus que no veus, dient:
                 `,
               },
             ],
@@ -1256,7 +1260,7 @@ export class AmaClass extends Person<AmaParametersType> {
           actions: [
             {
               type: "description",
-              text: "You hear an unlocking sound from what you only now realize is a door, and above the door a sign saying 'Foyer' lights up.\n\n*** Look to the right and you'll see a list of rooms you can go to from here ---->",
+              text: "Sents un so de desbloqueig del que només ara us adoneu que és una porta, i a sobre de la porta s'il·lumina un rètol que diu 'Foyer'.\n\n*** Mira a la dreta i veuràs una llista de sales a les quals pots anar des d'aquí ---->",
             },
           ],
         }
@@ -1408,7 +1412,7 @@ export class AmaClass extends Person<AmaParametersType> {
     if (parameters.prompt === "goExplore") {
       const player = this.world.entities.player;
       return tmpl`
-      Ama has completed the intake process. She should now encourage the player to explore the Intra complex.
+      Ama has completed the intake process. She should now encourage the player to explore the Intra complex. Do it in ${this.world.language} language, but do not translate proper nouns, place names, character names, or item names such as ${this.world.rooms.join(", ")} (keep these names exactly as they are).
 
       Emit this to invent a very short description of the player given what you know:
       <set attr="player.shortDescription">a very brief description</set>
@@ -1464,7 +1468,7 @@ export class AmaClass extends Person<AmaParametersType> {
         3. Tell them ${player.hisher} age (even if ${player.heshe} doesn't think that's ${player.hisher} age), but don't go into detail.
         4. Once you've told ${player.himher} that ${player.heshe} is very old mark it complete by emitting: <set attr="Ama.sharedPlayerAge">true</set>]]
 
-      Stay focused on completing these tasks and emit <set> at the end of the response if you complete them.
+      Stay focused on completing these tasks and emit <set> at the end of the response if you complete them. Do it in ${this.world.language} language, but do not translate proper nouns, place names, character names, or item names such as ${this.world.rooms.join(", ")} (keep these names exactly as they are).
       `;
     }
     let getToBed = this.playerShouldBeInBed() && !this.playerIsInBed();
@@ -1673,7 +1677,7 @@ export class PlayerClass extends Person<PlayerInputType> {
 
       This should be a description and not an action.]]
 
-      Respond by emitting the appropriate tags, following the user's input as closely as possible. ONLY speak as ${this.name}. Do not RESPOND to the input, responses will happen in follow-up requests, only emit tags to describe the player's actions when doing:
+      Respond always in ${this.world.language} language by emitting the appropriate tags, following the user's input as closely as possible. ONLY speak as ${this.name}. Do not RESPOND to the input, responses will happen in follow-up requests, only emit tags to describe the player's actions when doing:
       \`${parameters.input}\`
 
       [[${room.userInputInstructions}]]
@@ -1694,7 +1698,7 @@ export class PlayerClass extends Person<PlayerInputType> {
         title: "player examine",
       },
       systemInstruction: tmpl`
-      You are a computer assisting in running a text adventure game.
+      You are a computer assisting in running a text adventure game in ${this.world.language} language, but do not translate proper nouns, place names, character names, or item names such as ${this.world.rooms.join(", ")} (keep these names exactly as they are).
 
       The player ("${this.name}") is a character in the game, controlled by the user.
 
@@ -1739,7 +1743,7 @@ export class PlayerClass extends Person<PlayerInputType> {
         title: "player move",
       },
       systemInstruction: tmpl`
-      You are a computer assisting in running a text adventure game.
+      You are a computer assisting in running a text adventure game in ${this.world.language} language, but do not translate proper nouns, place names, character names, or item names such as ${this.world.rooms.join(", ")} (keep these names exactly as they are).
 
       The player ("${this.name}") is a character in the game, controlled by the user.
 
@@ -1790,6 +1794,8 @@ export class PlayerClass extends Person<PlayerInputType> {
       systemInstruction: tmpl`
       You are a computer assisting in running a text adventure game. You will act as an objective and fair game master.
 
+      Always respond in ${this.world.language} language, without exception, but do not translate proper nouns, place names, character names, or item names such as ${this.world.rooms.join(", ")} (keep these names exactly as they are).
+
       The player ("${this.name}") is a character in the game, controlled by the user.
 
       The player is located in: ${this.currentLocationPrompt(parameters)}
@@ -1833,7 +1839,7 @@ export class PlayerClass extends Person<PlayerInputType> {
 
       success="true" if it succeeds, "false" if it fails. minutes is how long the attempt took.
 
-      Respond with the appropriate tags for this action attempt:
+      Respond in ${this.world.language} language with the appropriate tags for this action attempt:
       \`${parameters.actionAttempt}\`
       `,
     };
@@ -1881,7 +1887,7 @@ export class PlayerClass extends Person<PlayerInputType> {
         storyEvent.actions.push({
           type: "description",
           text: tmpl`
-            You try to go to a room (${JSON.stringify(tag.content)}) that doesn't exist.
+            Intentes anar a una sala (${JSON.stringify(tag.content)}) que no existeix.
             `,
         });
         return storyEvent;
@@ -1894,7 +1900,7 @@ export class PlayerClass extends Person<PlayerInputType> {
         storyEvent.actions.push({
           type: "description",
           text: tmpl`
-            You try to go to ${room.name} but you can't get there from here.
+            Intentes anar a ${room.name} pero no pots arribar-hi des d'aquí.
             `,
         });
         return storyEvent;
@@ -2028,7 +2034,7 @@ export class PlayerClass extends Person<PlayerInputType> {
       },
       model: "flash",
       systemInstruction: tmpl`
-      You are helping run a text adventure game.
+      You are helping run a text adventure game in ${this.world.language} language.
 
       The genre is absurd and comedic sci-fi, in the style of Hitchhiker's Guide to the Galaxy or the movie Brazil.
 

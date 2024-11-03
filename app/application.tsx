@@ -59,7 +59,7 @@ export default function Home() {
           Intra
           <span className="text-gray-500 text-sm hidden md:inline">
             {" "}
-            !alfa: guardar jocs pot trencar-se periòdicament
+            !alfa: les partides guardades poden corrompre's entre versions
           </span>
           <span className="text-gray-500 text-sm md:hidden"> !alpha</span>
         </span>
@@ -404,7 +404,7 @@ function ChatLogMovement({
       }
       children.push(
         <div key={entityId} className="text-xs">
-          <span className={person.color}>{person.name}</span> comes from{" "}
+          <span className={person.color}>{person.name}</span> ve de{" "}
           <span className={beforeRoom.color}>{beforeRoom.name}</span>
         </div>
       );
@@ -498,10 +498,10 @@ function Input() {
       />
       <div className="flex flex-col ml-2">
         <Button className="bg-green-600 text-green-100" onClick={onSubmit}>
-          Send
+          Enviar
         </Button>
         <Button className="bg-yellow-500 text-yellow-900" onClick={onUndo}>
-          Undo
+          Desfer
         </Button>
       </div>
     </div>
@@ -610,9 +610,9 @@ function Inventory() {
   const player = model.world.entities.player;
   return (
     <div className="flex-1 p-4">
-      <div className="mb-2">Inventory</div>
-      (encara no tens inventori implementat)
-      <div>- Key card</div>
+      <div className="mb-2">Inventori</div>
+      (encara no tens inventori)
+      <div>- Clau d'accés</div>
     </div>
   );
 }
@@ -648,7 +648,7 @@ function Controls() {
         {!showLoad.value && (
           <CheckButton
             signal={showSave}
-            on="Cancel"
+            on="Cancel·lar"
             off="💾"
             className="mr-1"
           />
@@ -656,7 +656,7 @@ function Controls() {
         {!showSave.value && (
           <CheckButton
             signal={showLoad}
-            on="Cancel"
+            on="Cancel·lar"
             off="📂"
             className="mr-1"
           />
@@ -664,8 +664,8 @@ function Controls() {
         {!showSave.value && !showLoad.value && (
           <CheckButton
             signal={showInternals}
-            on="Internals (Spoilers)"
-            off="Normal Mode"
+            on="Entranyes (Spoilers)"
+            off="Mode Normal"
           />
         )}
       </div>
@@ -713,7 +713,7 @@ function NormalControls() {
     <>
       <div className="mb-2">Controls</div>
       <div className="border-b border-gray-400">
-        Location:{" "}
+        Localització:{" "}
         <strong className={room?.color}>{room?.name || "In the void"}</strong>
       </div>
       {room && (
@@ -725,7 +725,7 @@ function NormalControls() {
           )}
           {folks.length > 0 && (
             <div className="flex-1">
-              People:
+              Persones:
               <ul className="list-dash ml-4">
                 {folks.map((entity, i) => (
                   <li key={i}>
@@ -791,12 +791,12 @@ function ExitList({ room }: { room: Room }) {
   }
   return (
     <div className="flex-1">
-      Exits:
+      Sortides:
       <ul className="list-dash ml-4">
         {room!.exits.map((exit, i) => {
           const targetRoom = model.world.getRoom(exit.roomId);
           if (!targetRoom) {
-            return <li key={i}>- Missing exit: {exit.roomId}</li>;
+            return <li key={i}>- Sortida inexistent: {exit.roomId}</li>;
           }
           return (
             <li key={i}>
@@ -830,7 +830,7 @@ function SaveControls({ onDone }: { onDone: () => void }) {
   }, [model.updates.value]);
   return (
     <div>
-      <div>Save</div>
+      <div>Guardar partida</div>
       <input
         type="text"
         className="bg-gray-800 text-white p-2 border mr-1"
@@ -864,7 +864,7 @@ function LoadControls({ onDone }: { onDone: () => void }) {
   }
   return (
     <div>
-      <div>Load</div>
+      <div>Carregar partida</div>
       <div>
         <div className="mb-1">
           <Button
@@ -903,7 +903,7 @@ function LoadControls({ onDone }: { onDone: () => void }) {
           );
         })}
       </div>
-      {saves.value.length === 0 && <div>No saves found</div>}
+      {saves.value.length === 0 && <div>No hi ha partides guardades</div>}
     </div>
   );
 }
@@ -956,8 +956,7 @@ function ViewObjects() {
   return (
     <div>
       <div className="text-xs text-gray-300 mx-2">
-        Below is a list of all objects, and the edits made to those objects over
-        the course of the game
+        A continuació hi ha una llista de tots els objectes, i les edicions fetes a aquests objectes al llarg del joc
       </div>
       {entities.map((entity) => {
         return (
@@ -1143,7 +1142,7 @@ function Help() {
 function Settings() {
   return (
     <div className="w-full h-full bg-blue-900 text-white py-4 px-8 border-white border-8 overflow-scroll flex flex-col">
-      <div className="flex justify-center mb-4">Settings</div>
+      <div className="flex justify-center mb-4">Configuració</div>
       <div className="flex-1 overflow-y-auto">
         <div>
           Escull un model:
@@ -1156,7 +1155,7 @@ function Settings() {
         <div className="mt-4">
           {openrouterCode.value ? (
             <>
-              You have a code from{" "}
+              Tens un codi d'
               <A href="https://openrouter.ai/keys" blank>
                 OpenRouter.ai
               </A>
@@ -1177,7 +1176,7 @@ function Settings() {
           ) : (
             <>
               <div className="mb-4">
-                Per tenir accés a models de pagament, pots obtenir un codi de
+                Per tenir accés a models de pagament, pots obtenir un codi d'
                 <A href="https://openrouter.ai/" blank>
                   OpenRouter.ai
                 </A>
@@ -1188,7 +1187,7 @@ function Settings() {
             </>
           )}
           <div className="mt-4">
-            Set a custom endpoint: <br />
+            Configurar un endpoint personalitzat: <br />
             <input
               type="text"
               className="bg-gray-800 text-white p-2 w-2/3"

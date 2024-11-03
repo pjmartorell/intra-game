@@ -339,8 +339,8 @@ export function ModelSelector({
       >
         <option value="">
           {availableModels.value
-            ? "Select a model... (prices prompt/completion $/million tokens)"
-            : "Loading..."}
+            ? "Selecciona un model... (preus prompt/completion $/milió de tokens)"
+            : "Carregant..."}
         </option>
         {RATING_ORDER.map((rating) => {
           const match = models?.filter(

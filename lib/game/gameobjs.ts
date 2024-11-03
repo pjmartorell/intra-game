@@ -326,17 +326,18 @@ export const entities = {
     A simple room that serves only as a passage.
     `,
     description: `
-    A small room, a passage from the intake area.
+    Una petita habitació, un passadís de la zona d'Intake.
     `,
     color: "text-emerald-500",
     exits: [
       { roomId: "Intake" },
       {
         roomId: "Hollow_Atrium",
-        restriction: "The door is locked and doens't open automatically",
+        restriction: "Always write in Catalan language, without exception, but do not translate proper nouns, place names or character names. Remove underscores from proper nouns, place names or character names. The door is locked and doens't open automatically.",
       },
     ],
     actionPrompt: `
+    Always write in Catalan language, without exception, but do not translate proper nouns, place names or character names.
     If the player attempts any kind of action related to unlocking the door or manipulating a computer pad, then they successfully "unlock" the door; it's a very easy task as long as they try. Emit at the end of the response to signal the door has been unlocked:
 
     <removeRestriction>Hollow_Atrim</removeRestriction>
@@ -365,10 +366,10 @@ export const entities = {
       A vast, empty space beneath a frozen sunset.
     `,
     description: `
-      A large, open room lit by an orange glow from the sky screens above, which display an unchanging sunset.
-      Dusty statues of citizens stand along the walls, their faces worn smooth.
-      The sound of distant thunder plays occasionally, though no storm ever arrives.
-      The room is mostly empty, with the sound of footsteps echoing against the high ceilings.
+      Una gran sala il·luminada per una lluentor taronja provinent de les pantalles del cel de sobre, que projecten un capvespre immutable.
+      Al llarg de les parets s'alcen estàtues polsegoses de ciutadans, amb la cara desgastada.
+      El so d'un tro llunyà sona de tant en tant, encara que mai no arriba cap tempesta.
+      La sala està majoritàriament buida, amb el so de les passes ressonant contra els sostres alts.
     `,
     color: "text-orange-500",
     exits: [

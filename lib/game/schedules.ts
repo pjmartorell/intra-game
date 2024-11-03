@@ -535,7 +535,7 @@ export const schedules: Record<string, PersonScheduleTemplateType[]> = {
       time: time("10:00 AM"),
       activity: "Disrupt June's Meditation",
       description:
-        "Doug interrupts June's meditation with an enthusiastic, 'Do you ever think about how long it takes the sky screens to load that sunset? Like, what if it glitched and showed a sunrise instead? That'd be wild, right?'",
+        "Doug interromp la meditació de June amb un entusiàstic: 'Alguna vegada has pensat quant de temps triguen les pantalles del cel a carregar aquesta posta de sol? O què passarria si si fallés momentàniament i mostrés la sortida del sol? Seria brutal, oi?'",
       inside: ["Tranquil_Pool"],
       attentive: true,
       early: 5,

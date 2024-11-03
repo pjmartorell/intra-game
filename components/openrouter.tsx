@@ -35,7 +35,7 @@ export function OpenRouterConnect() {
         event.preventDefault();
       }}
     >
-      Connect to OpenRouter
+      Connectar a OpenRouter
     </a>
   );
 }
