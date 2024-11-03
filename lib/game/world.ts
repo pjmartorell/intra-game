@@ -15,6 +15,7 @@ import { generateExactSchedule, timeAsString } from "./scheduler";
 export const ONE_DAY = 24 * 60;
 
 export class World {
+  language: string = "Catalan";
   entities: AllEntitiesType;
   original: AllEntitiesType;
   rooms: string[];

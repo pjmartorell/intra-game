@@ -837,22 +837,25 @@ export class Person<
         title: `prompt ${this.id}`,
       },
       systemInstruction: tmpl`
-      Ets un ordinador executant un joc d'aventures de text.
+      You are a computer running a text adventure game in ${this.world.language} language.
 
-      En aquest pas jugaràs el paper d'un personatge anomenat "${this.name}" (${this.pronouns}).
+      In this step you will be playing the part of a character named "${this.name}" (${this.pronouns}).
 
-      L'usuari està jugant amb el nom "${this.world.entities.player.name}" (${this.world.entities.player.pronouns}); l'id del jugador és "player".
+      The user is playing under the name "${this.world.entities.player.name}" (${this.world.entities.player.pronouns}); the id of the player is "player".
 
-      L'hora és ${timeAsString(this.world.timestampMinutes)}
-      ${this.name} es troba actualment a la sala "${this.myRoom().name}": ${this.myRoom().shortDescription}
+      The time is ${timeAsString(this.world.timestampMinutes)}
+      ${this.name} is currently in the room "${this.myRoom().name}": ${this.myRoom().shortDescription}
+
       <characterDescription>
       ${this.description}
       </characterDescription>
 
       <roleplayInstructions>
-      En general, l'objectiu del joc és que sigui DIVERTIT i SORPRENENT. Mou la conversa cap endavant i no tinguis por de sobreactuar! CONVERSA amb el jugador ${this.world.entities.player.name} i presta atenció al que ${this.world.entities.player.heshe} diu.
+      In general, the goal for the game to be FUN and SURPRISING. Move the conversation forward, and don't be afraid to overreact! ENGAGE with the player ${this.world.entities.player.name} and pay attention to what ${this.world.entities.player.heshe} says.
 
-      [[${IF(!hasInteracted)}Aquesta és la primera vegada que ${this.name} ha parlat amb el jugador ${this.world.entities.player.name}. No hi ha moltes persones noves a Intra, així que això podria ser un gran esdeveniment.]]
+      Even if the player answers in other languages, you must always respond in ${this.world.language}.
+
+      [[${IF(!hasInteracted)}This is the first time ${this.name} has spoken to the player ${this.world.entities.player.name}. There aren't many new people in Intra, so this might be a big deal.]]
 
       ${this.roleplayInstructions}
 
@@ -861,7 +864,7 @@ export class Person<
 
       ${this.activityDescription(parameters)}
 
-      Les altres persones a la sala són:
+      The other people in the room are:
       ${this.currentPeoplePrompt(parameters)}
 
       ${statePrompt}
@@ -870,44 +873,46 @@ export class Person<
       `,
       history: this.historyForEntity(parameters, { limit: 10 }),
       message: tmpl`
-      Donat l'estat de joc anterior, respon com el personatge "${this.name}"
+      Given the above play state, respond as the character "${this.name}" in ${this.world.language} language.
 
       [[This character has been triggered to act specifically by: "${parameters.trigger}"]]
 
-      Comença per compilar el context essencial donada l'història anterior, escrivint 4-5 paraules per a cada item:
+      Begin by assembling the essential context given the above history, writing 4-5 words for each item:
 
       <context>
-      1. Hi ha alguns fets que cal construir per continuar l'escena o la resposta? Si és així, inventa aquests fets i registra'ls.
-      2. Els objectius de ${this.name}, incloent llistar qualsevol objectiu específic indicat anteriorment al prompt
-      3. Fets rellevants de l'història
-      4. Com pot ser aquesta resposta divertida i/o sorprenent?
-      5. La reacció de ${this.name} a qualsevol discurs o esdeveniment recent
-      6. La intenció de ${this.name} en aquesta resposta
+      1. Are there any facts that have to be constructed to continue the scene or response? If so then invent those facts and record them.
+      2. ${this.name}'s goals, including listing out any specific goals previously noted in the prompt
+      3. Relevant facts from the history
+      4. How can this response be fun or surprising?
+      5. ${this.name}'s reaction to any recent speech or events
+      6. ${this.name}'s intention in this response
       </context>
 
-      Per generar diàleg, utilitza la sintaxi de diàleg:
+      To generate speech emit:
 
-      <dialog character="${this.name}">Diàleg escrit com ${this.name}</dialog>
+      <dialog character="${this.name}">Dialog written as ${this.name}</dialog>
 
-      Per parlar directament amb algú:
-      <dialog character="${this.name}" to="${lastTo || "Jim"}">Diàleg escrit com ${this.name} a ${lastTo || "Jim"}</dialog>
+      To speak directly TO someone:
 
-      [[${this.name} va parlar directament per última vegada amb ${lastTo}, així que és molt probable que encara li estigui parlant.]]
+      <dialog character="${this.name}" to="${lastTo || "Jim"}">Dialog written as ${this.name} to ${lastTo || "Jim"}</dialog>
 
-      Si el personatge ${this.name} està realitzant una acció, emet això (opcionalment estimant aproximadament el temps que trigarà en minuts):
-      <description minutes="5">Descriu l'acció</description>
+      [[${this.name} last spoke directly to ${lastTo}, so it's very likely ${this.heshe} is still speaking to them.]]
 
-      [[${IF(statePrompt)} Emet <set attr="...">...</set> si és apropiat.]]
+      If the character ${this.name} is performing an action, emit this (optionally roughly estimating the time it will take in minutes):
 
-      [[${IF(willLeave)}${this.name} està a punt de deixar la sala per anar a ${schedule?.inside[0]} (per poder: ${schedule?.activity}). Si ${this.name} decideix quedar-se una mica més, emet <deferSchedule></deferSchedule> o per deixar-ho definitivament ara emet <leaveNow></leaveNow>]]
+      <description minutes="5">Describe the action</description>
 
-      Finalment pots oferir una suggerència sobre el que el jugador podria fer a continuació, com a dos comandaments de 2-3 paraules (un per línia):
+      [[${IF(statePrompt)} Emit <set attr="...">...</set> if appropriate.]]
+
+      [[${IF(willLeave)}${this.name} is about to leave the room to go to ${schedule?.inside[0]} (so they can: ${schedule?.activity}). If ${this.name} decides to stay a little longer then emit <deferSchedule></deferSchedule> or to definitely leave now emit <leaveNow></leaveNow>]]
+
+      Lastly you may offer a suggestion for what the player might do next, as two 2-3 word commands (one per line):
+
       <suggestion>
-      digues hola
-      obre la porta
+      say hello
+      open door
       </suggestion>
 
-      Totes les teves respostes han de ser en català, és molt important!
       ${this.additionalPromptInstructions(parameters)}
       `,
     };
@@ -1176,8 +1181,9 @@ export class AmaClass extends Person<AmaParametersType> {
               El representant de Neuralis somriu, amb els llavis tancats. Hi ha una pausa. “Estem... més enllà d'això ara. Les coses són... diferents.” Un parpelleig als ulls. “Ja no és alguna cosa de la qual preocupar-se.”
 
               Les seves mans es mouen, inquietes.
-              L'estàtic pulsa—
-              "...calor rècord a la Costa Est...devastadors incendis a Califòrnia..."
+
+              Polsos estàtics—
+              "...calor rècord a la costa est... incendis forestals devastadors a Califòrnia..."
               `,
           },
         ],
