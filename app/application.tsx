@@ -480,7 +480,7 @@ function Input() {
       model.world.lastSuggestions || "INTRODUÏU UNA ORDRE O INSTRUCCIONS";
     if (model.updates.value.length < 7) {
       placeholder =
-        "Aquestes són només SUGGERÈNCIES, pots escriure qualsevol cosa...\n" + placeholder;
+        "Això són només SUGGERIMENTS, pots escriure qualsevol cosa..\n" + placeholder;
     }
   }
   return (
