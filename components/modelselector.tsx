@@ -377,7 +377,7 @@ export function ModelSelector({
               }
             }}
           >
-            {copying.value ? "Copied!" : `id: ${signal.value.id}`}
+            {copying.value ? "Copiat!" : `id: ${signal.value.id}`}
           </div>
           <pre className="text-xs bg-blue-950 p-2 m-4 whitespace-pre-wrap">
             {signal.value.description}
